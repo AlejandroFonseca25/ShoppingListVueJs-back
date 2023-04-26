@@ -1,0 +1,26 @@
+server:
+ port: ${port:8090}
+
+spring:
+  banner:
+    image:
+      width: 35
+  output:
+    ansi:
+      enabled: ALWAYS
+  jackson:
+      defaultPropertyInclusion: NON_NULL
+
+logging:
+  file: shoppingList.log
+  level:
+    org:
+      hibernate: ERROR
+      springframework:
+        web: DEBUG
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
