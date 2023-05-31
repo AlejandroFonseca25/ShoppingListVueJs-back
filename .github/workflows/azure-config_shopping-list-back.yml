@@ -6,8 +6,6 @@ name: Build and deploy JAR app to Azure Web App - shopping-list-back
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
