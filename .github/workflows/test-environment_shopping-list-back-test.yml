@@ -48,6 +48,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'shopping-list-back-test'
-          slot-name: 'Test'
+          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CB472792A676461F9E4B97C1E7150625 }}
           package: '*.jar'
