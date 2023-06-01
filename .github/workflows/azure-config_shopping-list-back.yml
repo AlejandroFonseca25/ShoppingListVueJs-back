@@ -50,4 +50,3 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B6E20179A1B3439FA4D9CBF7DDA7E696 }}
           package: 'shoppinglist-backend.jar'
-
