@@ -4,7 +4,8 @@
   "description": "This is the Back-end repository for the QA final project",
   "main": "index.js",
   "scripts": {
-    "test:itemsList": "mocha ./src/test/e2e/itemsList"
+    "test:itemsList": "mocha ./src/test/e2e/itemsList",
+    "test:item": "mocha ./src/test/e2e/item"
   },
   "keywords": [
     "api-testing",
