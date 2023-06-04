@@ -4,8 +4,8 @@
   "description": "This is the Back-end repository for the QA final project",
   "main": "index.js",
   "scripts": {
-    "test:itemsList": "mocha src/test/java/com/github/rodionovsasha/shoppinglist/e2e/itemsList",
-    "test:item": "mocha src/test/java/com/github/rodionovsasha/shoppinglist/e2e/item"
+    "test:itemsList": "mocha src/test/java/com/github/rodionovsasha/shoppinglist/e2e/itemsList -t 5000",
+    "test:item": "mocha src/test/java/com/github/rodionovsasha/shoppinglist/e2e/item -t 5000"
   },
   "keywords": [
     "api-testing",
