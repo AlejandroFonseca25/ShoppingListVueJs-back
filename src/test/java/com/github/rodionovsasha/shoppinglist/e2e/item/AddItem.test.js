@@ -55,7 +55,7 @@ describe('Verifying adding Process of a Shopping item', () => {
             expect(error.response.status).to.equal(StatusCodes.BAD_REQUEST);
             expect(error.response.data).to.be.an('object');
             expect(error.response.data).to.have.property('name');
-            expect(error.response.data.name).to.equal('no puede estar vacío');
+            expect(error.response.data.name).to.equal('must not be blank');
         }
     });
 
@@ -76,7 +76,7 @@ describe('Verifying adding Process of a Shopping item', () => {
             expect(error.response.status).to.equal(StatusCodes.BAD_REQUEST);
             expect(error.response.data).to.be.an('object');
             expect(error.response.data).to.have.property('listId');
-            expect(error.response.data.listId).to.equal('no puede ser null');
+            expect(error.response.data.listId).to.equal('must not be null');
         }
     });
 
