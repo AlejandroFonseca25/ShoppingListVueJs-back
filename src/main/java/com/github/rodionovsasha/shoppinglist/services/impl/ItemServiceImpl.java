@@ -25,13 +25,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void updateItem(long id, long listId, Item item) {
+    public Item updateItem(long id, long listId, Item item) {
         Item updatedItem = getItemById(id);
         updatedItem.setName(item.getName());
         updatedItem.setComment(item.getComment());
         updatedItem.setBought(item.isBought());
         updatedItem.setItemsList(itemsListService.getItemsListById(listId));
-        itemRepository.save(updatedItem);
+        return itemRepository.save(updatedItem);
     }
 
     @Override

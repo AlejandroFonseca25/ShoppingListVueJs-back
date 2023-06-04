@@ -7,9 +7,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,12 +21,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 @Api(tags = "Item")
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "/api/v1", produces = APPLICATION_JSON_VALUE)
 public class ItemRestController {
     private static final String ITEM_BASE_PATH = "/item";
-    @Autowired
+
     private ItemService itemService;
-    @Autowired
+
     private ModelMapper modelMapper;
 
     @ApiOperation(value = "Get item", response = ItemDto.GetResponse.class)
