@@ -7,11 +7,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,13 +25,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 @Api(tags = "Items List")
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "/api/v1", produces = APPLICATION_JSON_VALUE)
 public class ItemsListRestController {
     private static final String ITEMS_LIST_BASE_PATH = "/itemsList";
-
-    @Autowired
     private ItemsListService itemsListService;
-    @Autowired
     private ModelMapper modelMapper;
 
     @ApiOperation(value = "Get all lists",

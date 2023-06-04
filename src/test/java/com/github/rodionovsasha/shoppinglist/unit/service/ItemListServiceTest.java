@@ -1,6 +1,5 @@
 package com.github.rodionovsasha.shoppinglist.unit.service;
 
-import com.github.rodionovsasha.shoppinglist.entities.Item;
 import com.github.rodionovsasha.shoppinglist.entities.ItemsList;
 import com.github.rodionovsasha.shoppinglist.exceptions.NotFoundException;
 import com.github.rodionovsasha.shoppinglist.repositories.ItemsListRepository;
@@ -9,10 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
+import static com.github.rodionovsasha.shoppinglist.unit.utils.ModelBuilder.*;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -25,67 +23,6 @@ public class ItemListServiceTest {
     public void init(){
         itemsListRepository = spy(ItemsListRepository.class);
         itemsListService = new ItemsListServiceImpl(itemsListRepository);
-    }
-
-    private Item getDefaultItem1(){
-        return Item.builder()
-                .id(1)
-                .name("Item 1")
-                .comment("comment for item 1")
-                .isBought(false)
-                .itemsList(getDefaultItemsList1())
-                .build();
-    }
-
-    private Item getDefaultItem2(){
-        return Item.builder()
-                .id(1)
-                .name("Item 2")
-                .comment("comment for item 2")
-                .isBought(false)
-                .itemsList(getDefaultItemsList2())
-                .build();
-    }
-
-    private Item getDefaultItem(){
-        return Item.builder()
-                .id(1)
-                .name("Item 1")
-                .comment("comment for item 1")
-                .isBought(false)
-                .itemsList(getDefaultItemsList1())
-                .build();
-    }
-
-    private List<Item> getItemsForItemsList1(){
-        List<Item> items = new LinkedList<>();
-        items.add(getDefaultItem1());
-        Item item = getDefaultItem2();
-        item.setItemsList(getDefaultItemsList1());
-        items.add(item);
-        return items;
-    }
-
-    private List<Item> getItemsForItemsList2(){
-        List<Item> items = new LinkedList<>();
-        items.add(getDefaultItem2());
-        return items;
-    }
-
-    private ItemsList getDefaultItemsList1(){
-        return ItemsList.builder()
-                .id(1)
-                .name("Shopping list 1")
-                .items(null)
-                .build();
-    }
-
-    private ItemsList getDefaultItemsList2(){
-        return ItemsList.builder()
-                .id(2)
-                .name("Shopping list 2")
-                .items(null)
-                .build();
     }
 
     @Test
@@ -101,6 +38,7 @@ public class ItemListServiceTest {
         assertEquals(response.getId(), id);
         verify(itemsListRepository, times(0)).findById(any());
         verify(itemsListRepository, times(1)).save(argThat(new ItemsListMatcher(itemsList, 1)));
+        verify(itemsListRepository, times(1)).save(any());
         verify(itemsListRepository, times(0)).findAll();
     }
 
@@ -117,7 +55,9 @@ public class ItemListServiceTest {
         itemsListService.updateItemsList(response.getId(), newName);
 
         verify(itemsListRepository, times(1)).findById(any());
+        verify(itemsListRepository, times(1)).findById(argThat(x -> x.equals(response.getId())));
         verify(itemsListRepository, times(1)).save(argThat(new ItemsListMatcher(itemsListToCompare, 2)));
+        verify(itemsListRepository, times(1)).save(any());
         verify(itemsListRepository, times(0)).findAll();
     }
 
@@ -135,6 +75,7 @@ public class ItemListServiceTest {
 
         assertEquals("The entity with id '"+response.getId()+"' could not be found", notFoundException.getMessage());
         verify(itemsListRepository, times(1)).findById(any());
+        verify(itemsListRepository, times(1)).findById(argThat(x -> x.equals(response.getId())));
         verify(itemsListRepository, times(0)).save(any());
         verify(itemsListRepository, times(0)).findAll();
     }
@@ -150,7 +91,9 @@ public class ItemListServiceTest {
         itemsListService.deleteItemsList(response.getId());
 
         verify(itemsListRepository, times(1)).findById(any());
+        verify(itemsListRepository, times(1)).findById(argThat(x -> x.equals(response.getId())));
         verify(itemsListRepository, times(1)).delete(argThat(new ItemsListMatcher(itemsListToCompare, 2)));
+        verify(itemsListRepository, times(1)).delete(any());
         verify(itemsListRepository, times(0)).findAll();
     }
 
@@ -164,6 +107,7 @@ public class ItemListServiceTest {
 
         assertEquals("The entity with id '"+response.getId()+"' could not be found", notFoundException.getMessage());
         verify(itemsListRepository, times(1)).findById(any());
+        verify(itemsListRepository, times(1)).findById(argThat(x -> x.equals(response.getId())));
         verify(itemsListRepository, times(0)).delete(any());
         verify(itemsListRepository, times(0)).findAll();
 
@@ -189,6 +133,7 @@ public class ItemListServiceTest {
         assertEquals(itemsListToCompare.getItems().get(0).getItemsList().getName(), itemsListFound.getItems().get(0).getItemsList().getName());
         assertEquals(itemsListToCompare.getItems().get(0).getItemsList().getItems(), itemsListFound.getItems().get(0).getItemsList().getItems());
         verify(itemsListRepository, times(1)).findById(any());
+        verify(itemsListRepository, times(1)).findById(argThat(x -> x.equals(response.getId())));
         verify(itemsListRepository, times(0)).delete(any());
         verify(itemsListRepository, times(0)).save(any());
         verify(itemsListRepository, times(0)).findAll();
@@ -204,6 +149,7 @@ public class ItemListServiceTest {
 
         assertEquals("The entity with id '"+response.getId()+"' could not be found", notFoundException.getMessage());
         verify(itemsListRepository, times(1)).findById(any());
+        verify(itemsListRepository, times(1)).findById(argThat(x -> x.equals(response.getId())));
         verify(itemsListRepository, times(0)).delete(any());
         verify(itemsListRepository, times(0)).save(any());
         verify(itemsListRepository, times(0)).findAll();
@@ -243,6 +189,4 @@ public class ItemListServiceTest {
         verify(itemsListRepository, times(0)).delete(any());
         verify(itemsListRepository, times(0)).save(any());
     }
-
-
 }
