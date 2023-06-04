@@ -3,16 +3,14 @@ package com.github.rodionovsasha.shoppinglist.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 
 @Getter @Setter
+@Builder
 public class ItemsListDto implements Serializable {
     private static final long serialVersionUID = 1;
 
