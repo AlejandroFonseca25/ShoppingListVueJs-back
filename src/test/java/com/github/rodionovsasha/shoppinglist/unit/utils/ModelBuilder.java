@@ -8,33 +8,21 @@ import java.util.List;
 
 public class ModelBuilder {
     public static Item getDefaultItem1(){
-        return Item.builder()
-                .id(1)
-                .name("Item 1")
-                .comment("comment for item 1")
-                .isBought(false)
-                .itemsList(getDefaultItemsList1())
-                .build();
+        Item item = new Item("Item 1");
+        item.setId(1);
+        item.setComment("comment for item 1");
+        item.setBought(false);
+        item.setItemsList(getDefaultItemsList1());
+        return item;
     }
 
     public static Item getDefaultItem2(){
-        return Item.builder()
-                .id(1)
-                .name("Item 2")
-                .comment("comment for item 2")
-                .isBought(false)
-                .itemsList(getDefaultItemsList2())
-                .build();
-    }
-
-    public static Item getDefaultItem(){
-        return Item.builder()
-                .id(1)
-                .name("Item 1")
-                .comment("comment for item 1")
-                .isBought(false)
-                .itemsList(getDefaultItemsList1())
-                .build();
+        Item item = new Item("Item 2");
+        item.setId(2);
+        item.setComment("comment for item 2");
+        item.setBought(false);
+        item.setItemsList(getDefaultItemsList2());
+        return item;
     }
 
     public static List<Item> getItemsForItemsList1(){
@@ -53,18 +41,14 @@ public class ModelBuilder {
     }
 
     public static ItemsList getDefaultItemsList1(){
-        return ItemsList.builder()
-                .id(1)
-                .name("Shopping list 1")
-                .items(null)
-                .build();
+        ItemsList itemsList = new ItemsList("Shopping list 1");
+        itemsList.setId(1);
+        return itemsList;
     }
 
     public static ItemsList getDefaultItemsList2(){
-        return ItemsList.builder()
-                .id(2)
-                .name("Shopping list 2")
-                .items(null)
-                .build();
+        ItemsList itemsList = new ItemsList("Shopping list 2");
+        itemsList.setId(2);
+        return itemsList;
     }
 }

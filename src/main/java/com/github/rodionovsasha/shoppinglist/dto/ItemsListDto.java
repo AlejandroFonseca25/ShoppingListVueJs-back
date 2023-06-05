@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.List;
 
 @Getter @Setter
-@Builder
 public class ItemsListDto implements Serializable {
     private static final long serialVersionUID = 1;
 
