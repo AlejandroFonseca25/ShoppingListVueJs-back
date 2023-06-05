@@ -2,8 +2,8 @@ const axios = require('axios');
 const { StatusCodes } = require('http-status-codes');
 const { expect } = require('chai');
 
-const baseUrlItemsList = 'http://localhost:8090/api/v1/itemsList/';
-const baseUrlItems = 'http://localhost:8090/api/v1/item/';
+const baseUrlItemsList = 'https://shopping-list-back.azurewebsites.net/api/v1/itemsList/';
+const baseUrlItems = 'https://shopping-list-back.azurewebsites.net/api/v1/item/';
 
 describe('Verifying getting Process of an item', () => {
 
@@ -53,7 +53,7 @@ describe('Verifying getting Process of an item', () => {
             expect(error.response.status).to.equal(StatusCodes.NOT_FOUND);
             expect(error.response.data).to.be.an('object');
             expect(error.response.data).to.have.property('message');
-            expect(error.response.data.message).to.equal("Item not found");
+            expect(error.response.data.message).to.equal("The entity with id '4' could not be found");
         }
     });
 

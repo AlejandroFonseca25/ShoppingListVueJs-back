@@ -2,7 +2,9 @@ const axios = require('axios');
 const { StatusCodes } = require('http-status-codes');
 const { expect } = require('chai');
 
-const baseUrlItemsList = 'http://localhost:8090/api/v1/itemsList/';
+const baseUrlItemsList = 'https://shopping-list-back.azurewebsites.net/api/v1/itemsList/';
+
+
 
 describe('Verifying Updating Process of a Shopping List', () => {
 
