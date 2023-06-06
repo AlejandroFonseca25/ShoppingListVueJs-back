@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import static java.util.Arrays.asList;
 
@@ -18,6 +19,7 @@ public class Application {
     }
 
     @Bean
+    @Profile("!test")
     CommandLineRunner runner(ItemsListService itemsListService, ItemService itemService) {
         return args -> {
             asList("Shopping list 1", "Shopping list 2", "Shopping list 3")
