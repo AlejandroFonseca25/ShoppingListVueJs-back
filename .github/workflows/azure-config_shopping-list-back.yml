@@ -24,6 +24,7 @@ jobs:
       - run: npm run test:item
 
   build:
+    needs: e2e_test
     runs-on: ubuntu-latest
 
     steps:
