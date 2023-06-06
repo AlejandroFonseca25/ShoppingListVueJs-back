@@ -48,6 +48,9 @@ describe('Verifying Deleting Process of a Shopping List', () => {
         } catch (error) {
             // Assertion
             expect(error.response.status).to.equal(StatusCodes.BAD_REQUEST);
+            expect(error.response.data).to.be.an('object');
+            expect(error.response.data).to.have.property('message');
+            expect(error.response.data.message).to.equal("Failed to convert value of type 'java.lang.String' to required type 'long'; nested exception is java.lang.NumberFormatException: For input string: \"a\"");
         }
     });
 });

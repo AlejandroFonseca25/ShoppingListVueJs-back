@@ -17,6 +17,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,6 +38,7 @@ public class ItemTest {
 
     @InjectMocks
     private ItemRestController itemController;
+
 
     @BeforeEach
     public void changeContext(PactVerificationContext context) {
@@ -71,7 +73,6 @@ public class ItemTest {
     public void deleteItem() {
         doNothing().when(itemService).deleteItem(anyLong());
     }
-
     @State("has item to get")
     public void getItem() {
         ItemsList listItem;
@@ -89,7 +90,6 @@ public class ItemTest {
         itemDto.setComment("For juice");
         itemDto.setBought(true);
         itemDto.setListId(1);
-
         when(itemService.getItemById(any(long.class))).thenReturn(item);
         when(modelMapper.map(any(Item.class),any())).thenReturn(itemDto);
     }
@@ -105,7 +105,6 @@ public class ItemTest {
         item.setComment("For juice");
         item.setBought(true);
         item.setItemsList(listItem);
-
         when(itemService.updateItem(any(long.class),any(long.class),any())).thenReturn(item);
     }
 }

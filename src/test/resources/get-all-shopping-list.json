@@ -1,0 +1,18 @@
+{
+  "type": "array",
+  "minItems": 1,
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"]
+    }
+  ]
+}
