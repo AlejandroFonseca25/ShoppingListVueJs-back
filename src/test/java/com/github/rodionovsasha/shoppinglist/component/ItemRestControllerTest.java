@@ -76,9 +76,10 @@ public class ItemRestControllerTest {
 
         assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
         assertThat(response.getContentType(), equalTo(MediaType.APPLICATION_JSON_UTF8.toString()));
-        ItemDto.GetResponse items = objectMapper.readValue(response.getContentAsString(),new TypeReference<ItemDto.GetResponse>() {});
+        ItemDto.GetResponse items = objectMapper.readValue(response.getContentAsString(), new TypeReference<ItemDto.GetResponse>() {
+        });
         assertEquals(1, items.getId());
-        assertEquals("Shopping List Test 1", items.getName());
+        assertEquals("Orange 2kg", items.getName());
     }
 
     @Test
@@ -90,6 +91,7 @@ public class ItemRestControllerTest {
         assertEquals("", response.getContentAsString());
         assertNull(response.getContentType());
     }
+
     @Test
     @SneakyThrows
     public void testGetAnItemsListByIdWhenTheItemsListDoesNotExist() {
@@ -105,6 +107,7 @@ public class ItemRestControllerTest {
     public void testDeleteAnItem() {
         mockMvc.perform(delete("/api/v1/item/1")).andExpect(status().isNoContent());
     }
+
     @Test
     @SneakyThrows
     public void testDeleteAnItemsWhenTheRequestIsBad() {
@@ -119,5 +122,139 @@ public class ItemRestControllerTest {
         val response = mockMvc.perform(delete("/api/v1/item/999")).andExpect(status().isNotFound()).andReturn().getResponse();
         assertEquals("", response.getContentAsString());
         assertNull(response.getContentType());
+    }
+
+    @Test
+    @SneakyThrows
+    public void testSaveAnItem() {
+        ItemDto item = new ItemDto();
+        item.setBought(true);
+        item.setComment("Magnificent cream cheese");
+        item.setListId(1L);
+        item.setName("Cheese");
+        String body = objectMapper.writeValueAsString(item);
+        val response = mockMvc.perform(post("/api/v1/item").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isCreated()).andReturn().getResponse();
+        LinkedHashMap createResponse = objectMapper.readValue(response.getContentAsString(), LinkedHashMap.class);
+        assertEquals(2, createResponse.get("id"));
+        assertEquals(1, createResponse.get("listId"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void testSaveAnItemWithoutName() {
+        ItemDto item = new ItemDto();
+        item.setBought(true);
+        item.setComment("Magnificent cream cheese");
+        item.setListId(1L);
+        String body = objectMapper.writeValueAsString(item);
+        val response = mockMvc.perform(post("/api/v1/item").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isBadRequest()).andReturn().getResponse();
+        LinkedHashMap createResponse = objectMapper.readValue(response.getContentAsString(), LinkedHashMap.class);
+        assertEquals("must not be blank", createResponse.get("name"));
+        assertThat(response.getContentType(), equalTo(MediaType.APPLICATION_JSON_UTF8.toString()));
+    }
+
+    @Test
+    @SneakyThrows
+    public void testSaveAnItemWithoutListId() {
+        ItemDto item = new ItemDto();
+        item.setBought(true);
+        item.setComment("Magnificent cream cheese");
+        item.setName("Cheese");
+        String body = objectMapper.writeValueAsString(item);
+        val response = mockMvc.perform(post("/api/v1/item").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isBadRequest()).andReturn().getResponse();
+        LinkedHashMap createResponse = objectMapper.readValue(response.getContentAsString(), LinkedHashMap.class);
+        assertEquals("must not be null", createResponse.get("listId"));
+        assertThat(response.getContentType(), equalTo(MediaType.APPLICATION_JSON_UTF8.toString()));
+    }
+
+    @Test
+    @SneakyThrows
+    public void testSaveAnItemWithANonExistentList() {
+        ItemDto item = new ItemDto();
+        item.setBought(true);
+        item.setComment("Magnificent cream cheese");
+        item.setListId(999L);
+        item.setName("Cheese");
+        String body = objectMapper.writeValueAsString(item);
+        mockMvc.perform(post("/api/v1/item").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @SneakyThrows
+    public void testUpdateAnItem() {
+        ItemsListDto itemsList = new ItemsListDto();
+        itemsList.setName("Temporal Shopping List");
+        String listBody = objectMapper.writeValueAsString(itemsList);
+        mockMvc.perform(post("/api/v1/itemsList").contentType(MediaType.APPLICATION_JSON_UTF8).content(listBody));
+
+        ItemDto item = new ItemDto();
+        item.setBought(false);
+        item.setComment("Special goat milk");
+        item.setName("Milk");
+        item.setListId(2L);
+        String body = objectMapper.writeValueAsString(item);
+        mockMvc.perform(put("/api/v1/item/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isOk());
+    }
+
+    @Test
+    @SneakyThrows
+    public void testUpdateANonExistentItem() {
+        ItemsListDto itemsList = new ItemsListDto();
+        itemsList.setName("Temporal Shopping List");
+        String listBody = objectMapper.writeValueAsString(itemsList);
+        mockMvc.perform(post("/api/v1/itemsList").contentType(MediaType.APPLICATION_JSON_UTF8).content(listBody));
+
+        ItemDto item = new ItemDto();
+        item.setBought(false);
+        item.setComment("Special goat milk");
+        item.setName("Milk");
+        item.setListId(2L);
+        String body = objectMapper.writeValueAsString(item);
+        mockMvc.perform(put("/api/v1/item/999").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @SneakyThrows
+    public void testUpdateAnItemWithEmptyName() {
+        ItemsListDto itemsList = new ItemsListDto();
+        itemsList.setName("Temporal Shopping List");
+        String listBody = objectMapper.writeValueAsString(itemsList);
+        mockMvc.perform(post("/api/v1/itemsList").contentType(MediaType.APPLICATION_JSON_UTF8).content(listBody));
+
+        ItemDto item = new ItemDto();
+        item.setBought(false);
+        item.setComment("Special goat milk");
+        item.setListId(2L);
+        String body = objectMapper.writeValueAsString(item);
+        val response = mockMvc.perform(put("/api/v1/item/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isBadRequest()).andReturn().getResponse();
+        LinkedHashMap createResponse = objectMapper.readValue(response.getContentAsString(), LinkedHashMap.class);
+        assertEquals("must not be blank", createResponse.get("name"));
+        assertThat(response.getContentType(), equalTo(MediaType.APPLICATION_JSON_UTF8.toString()));
+    }
+
+    @Test
+    @SneakyThrows
+    public void testUpdateAnItemWithANonExistentList() {
+        ItemDto item = new ItemDto();
+        item.setBought(false);
+        item.setComment("Special goat milk");
+        item.setListId(999L);
+        item.setName("Milk");
+        String body = objectMapper.writeValueAsString(item);
+        mockMvc.perform(put("/api/v1/item/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @SneakyThrows
+    public void testUpdateAnItemWithANullList() {
+        ItemDto item = new ItemDto();
+        item.setBought(false);
+        item.setComment("Special goat milk");
+        item.setName("Milk");
+        String body = objectMapper.writeValueAsString(item);
+        val response = mockMvc.perform(put("/api/v1/item/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(body)).andExpect(status().isBadRequest()).andReturn().getResponse();
+        LinkedHashMap createResponse = objectMapper.readValue(response.getContentAsString(), LinkedHashMap.class);
+        assertEquals("must not be null", createResponse.get("listId"));
+        assertThat(response.getContentType(), equalTo(MediaType.APPLICATION_JSON_UTF8.toString()));
     }
 }
