@@ -7,7 +7,6 @@ import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactBrokerAuth;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
-
 import com.github.rodionovsasha.shoppinglist.controllers.ItemRestController;
 import com.github.rodionovsasha.shoppinglist.dto.ItemDto;
 import com.github.rodionovsasha.shoppinglist.entities.Item;
@@ -38,13 +37,14 @@ public class ItemTest {
     private ModelMapper modelMapper;
 
     @InjectMocks
-    private ItemRestController itemRestController;
+    private ItemRestController itemController;
+
 
     @BeforeEach
     public void changeContext(PactVerificationContext context) {
         System.setProperty("pact.verifier.publishResults", "true");
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
-        testTarget.setControllers(itemRestController);
+        testTarget.setControllers(itemController);
         context.setTarget(testTarget);
     }
 
@@ -54,6 +54,25 @@ public class ItemTest {
         context.verifyInteraction();
     }
 
+    @State("there are no items")
+    public void addItem() {
+        ItemsList list = new ItemsList("Shopping list");
+        list.setId(1);
+
+        Item item = new Item();
+        item.setId(1);
+        item.setName("Cheese");
+        item.setComment("Fresh parmesan cheese");
+        item.setItemsList(list);
+
+        when(modelMapper.map(any(ItemDto.class),any())).thenReturn(item);
+        when(itemService.addItem(anyLong(),any(Item.class))).thenReturn(1L);
+    }
+
+    @State("has items to delete")
+    public void deleteItem() {
+        doNothing().when(itemService).deleteItem(anyLong());
+    }
     @State("has item to get")
     public void getItem() {
         ItemsList listItem;
@@ -71,9 +90,8 @@ public class ItemTest {
         itemDto.setComment("For juice");
         itemDto.setBought(true);
         itemDto.setListId(1);
-
-        Mockito.when(itemService.getItemById(Mockito.any(long.class))).thenReturn(item);
-        when(modelMapper.map(any(Item.class),Mockito.any())).thenReturn(itemDto);
+        when(itemService.getItemById(any(long.class))).thenReturn(item);
+        when(modelMapper.map(any(Item.class),any())).thenReturn(itemDto);
     }
 
     @State("has item to update")
@@ -87,8 +105,6 @@ public class ItemTest {
         item.setComment("For juice");
         item.setBought(true);
         item.setItemsList(listItem);
-
-        Mockito.when(itemService.updateItem(Mockito.any(long.class),Mockito.any(long.class),Mockito.any())).thenReturn(item);
+        when(itemService.updateItem(any(long.class),any(long.class),any())).thenReturn(item);
     }
-    
 }
