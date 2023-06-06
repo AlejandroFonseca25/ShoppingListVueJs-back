@@ -71,4 +71,41 @@ public class ItemTest {
     public void deleteItem() {
         doNothing().when(itemService).deleteItem(anyLong());
     }
+
+    @State("has item to get")
+    public void getItem() {
+        ItemsList listItem;
+        listItem = new ItemsList("List for Breakfast");
+        listItem.setId(1);
+        Item item;
+        item = new Item("Orange 2k");
+        item.setId(1);
+        item.setComment("For juice");
+        item.setBought(true);
+        item.setItemsList(listItem);
+        ItemDto.GetResponse itemDto = new ItemDto.GetResponse();
+        itemDto.setId(1);
+        itemDto.setName("Orange 2k");
+        itemDto.setComment("For juice");
+        itemDto.setBought(true);
+        itemDto.setListId(1);
+
+        when(itemService.getItemById(any(long.class))).thenReturn(item);
+        when(modelMapper.map(any(Item.class),any())).thenReturn(itemDto);
+    }
+
+    @State("has item to update")
+    public void updateItem() {
+        ItemsList listItem;
+        listItem = new ItemsList("List for Brekfast");
+        listItem.setId(1);
+        Item item;
+        item = new Item("Orange 2k");
+        item.setId(1);
+        item.setComment("For juice");
+        item.setBought(true);
+        item.setItemsList(listItem);
+
+        when(itemService.updateItem(any(long.class),any(long.class),any())).thenReturn(item);
+    }
 }
