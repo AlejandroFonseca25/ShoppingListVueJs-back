@@ -20,13 +20,10 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-
 import java.lang.reflect.Type;
 import java.util.Collections;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -54,7 +51,7 @@ public class ShoppingListTest {
 
     @BeforeEach
     public void changeContext(PactVerificationContext context) {
-        //System.setProperty("pact.verifier.publishResults", "true");
+        System.setProperty("pact.verifier.publishResults", "true");
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
         testTarget.setControllers(itemRestController,itemsListRestController);
         context.setTarget(testTarget);
@@ -85,6 +82,7 @@ public class ShoppingListTest {
     public void deleteItem() {
         doNothing().when(itemService).deleteItem(anyLong());
     }
+
     @State("has item to get")
     public void getItem() {
         ItemsList listItem;
@@ -166,5 +164,4 @@ public class ShoppingListTest {
     public void updateItemsList() {
         doNothing().when(itemsListService).updateItemsList(anyLong(), anyString());
     }
-
 }
