@@ -1,4 +1,4 @@
-package com.github.rodionovsasha.shoppinglist.unit.service;
+package com.github.rodionovsasha.shoppinglist.unit.itemsList.service;
 
 import com.github.rodionovsasha.shoppinglist.entities.ItemsList;
 import com.github.rodionovsasha.shoppinglist.exceptions.NotFoundException;

@@ -1,4 +1,4 @@
-package com.github.rodionovsasha.shoppinglist.unit.controller;
+package com.github.rodionovsasha.shoppinglist.unit.itemsList.controller;
 
 import com.github.rodionovsasha.shoppinglist.controllers.ItemsListRestController;
 import com.github.rodionovsasha.shoppinglist.dto.ItemsListDto;
